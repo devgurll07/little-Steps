@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Little Steps – Trusted 24×7 Childcare</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Nunito+Sans:wght@400;600;700&display=swap">
+<style>
+:root{--bg:#FBF8F2;--ink:#1D2540;--mut:#5C6485;--card:#fff;--line:#E6E1D6;--night:#1D2540;--sun:#F2B33D;--sage:#3E8E73;--rose:#C8454B;--soft:#EEF3EF;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141A2E;--ink:#F1EEE6;--mut:#A7AECB;--card:#1D2540;--line:#323B5C;--night:#0E1324;--soft:#1A2540}}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Nunito Sans",system-ui,sans-serif}
+h1,h2,h3{font-family:"Bricolage Grotesque",Georgia,sans-serif;line-height:1.1;margin:0 0 .5em}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--night);color:#fff;display:flex;gap:12px;align-items:center;justify-content:space-between;padding:10px 16px;flex-wrap:wrap}
+.logo{font:800 20px "Bricolage Grotesque",sans-serif}
+nav{display:flex;gap:4px;flex-wrap:wrap}
+nav button{background:none;border:0;color:#d5d9ec;padding:8px 12px;border-radius:99px;cursor:pointer}
+nav button.on{background:var(--sun);color:#1D2540;font-weight:700}
+.who{display:flex;gap:8px;align-items:center;font-size:14px}
+.btn{background:var(--sun);color:#1D2540;border:0;border-radius:10px;padding:10px 16px;font-weight:700;cursor:pointer}
+.btn.alt{background:transparent;border:1.5px solid var(--line);color:var(--ink)}
+.btn.bad{background:var(--rose);color:#fff}.btn.ok{background:var(--sage);color:#fff}.btn.sm{padding:6px 10px;font-size:14px}
+main{max-width:1080px;margin:0 auto;padding:20px 16px 60px}
+.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:24px;align-items:center;padding:12px 0 24px}
+.hero h1{font-size:clamp(34px,6vw,58px);font-weight:800}
+.hero p{color:var(--mut);max-width:46ch}
+.ring{width:100%;max-width:340px;margin:auto}
+.ring text{fill:var(--ink);font:700 13px "Nunito Sans"}
+.filters{display:flex;gap:10px;flex-wrap:wrap;background:var(--soft);padding:14px;border-radius:14px;margin:8px 0 18px}
+.filters label{display:flex;flex-direction:column;font-size:13px;color:var(--mut);gap:3px;flex:1;min-width:130px}
+input,select,textarea{border:1.5px solid var(--line);background:var(--card);border-radius:8px;padding:8px 10px;width:100%}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.cc h3{font-size:20px}.row{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:99px;background:var(--soft);color:var(--sage);margin:2px 3px 2px 0}
+.tag.n{background:var(--night);color:#fff}.tag.w{background:#FCEFD0;color:#7A5300}.tag.r{background:#F8DADB;color:var(--rose)}
+.mut{color:var(--mut);font-size:14px}
+.bar{height:8px;background:var(--line);border-radius:9px;overflow:hidden;margin:6px 0}.bar i{display:block;height:100%;background:var(--sage)}
+.tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px}
+.kpi b{font:800 30px "Bricolage Grotesque"}.kpi span{display:block;color:var(--mut);font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line)}
+.scroll{overflow-x:auto}
+dialog{border:0;border-radius:16px;padding:22px;max-width:520px;width:calc(100% - 24px);background:var(--card);color:var(--ink)}
+dialog::backdrop{background:rgba(10,14,30,.6)}
+.f{display:grid;gap:10px}.f label{font-size:13px;color:var(--mut)}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--night);color:#fff;padding:10px 18px;border-radius:10px;opacity:0;pointer-events:none;transition:.25s;z-index:20}
+#toast.s{opacity:1}
+@media(max-width:760px){.hero{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">🌙 Little Steps</div>
+  <nav id="nav"></nav>
+  <div class="who" id="who"></div>
+</header>
+<main id="app"></main>
+<dialog id="dlg"></dialog>
+<div id="toast" role="status"></div>
+<script>
+const $=s=>document.querySelector(s);
+const S={user:null,view:'find',tab:'bookings',notes:[],
+ f:{q:'',hours:'',age:'',plan:''},
+ centers:[
+  {id:1,name:'Sunrise Nest Crèche',area:'Malviya Nagar',city:'Jaipur',hours:'24x7',ages:['infant','toddler','preschool'],cap:20,price:{h:120,d:900,m:18000},certs:['Fire safety','Child First Aid','Police-verified staff'],safety:['Coded entry door','Night-duty nurse','CCTV recording (no live feed)'],cg:[['Meera Sharma','9 yrs, ECCEd'],['Anita Verma','5 yrs, infant care'],['Rohit Das','3 yrs, night shift']],rating:4.8,ok:true},
+  {id:2,name:'Moonlight Kids Care',area:'Vaishali Nagar',city:'Jaipur',hours:'night',ages:['toddler','preschool'],cap:12,price:{h:150,d:1100,m:21000},certs:['Child First Aid','Police-verified staff'],safety:['Night sleep pods','Parent pickup passcode'],cg:[['Kavita Joshi','7 yrs, pediatric nurse'],['Salma Khan','4 yrs, night care']],rating:4.6,ok:true},
+  {id:3,name:'Tiny Tots Day Academy',area:'C-Scheme',city:'Jaipur',hours:'day',ages:['toddler','preschool'],cap:30,price:{h:80,d:600,m:12000},certs:['Montessori certified','Fire safety'],safety:['Allergy-aware meals','Secure playground'],cg:[['Pooja Rathore','11 yrs, Montessori']],rating:4.5,ok:true},
+  {id:4,name:'Cradle Care 24',area:'Mansarovar',city:'Jaipur',hours:'24x7',ages:['infant','toddler'],cap:15,price:{h:140,d:1000,m:19500},certs:['Infant CPR','Fire safety'],safety:['Sterilised nursery','Emergency drop-in slots'],cg:[['Nisha Gupta','6 yrs, infant care'],['Deepa Nair','8 yrs, nanny']],rating:4.7,ok:true},
+  {id:5,name:'Happy Hands Crèche',area:'Jagatpura',city:'Jaipur',hours:'day',ages:['infant','toddler','preschool'],cap:18,price:{h:90,d:700,m:13500},certs:['Fire safety'],safety:['Daily activity reports'],cg:[['Rekha Singh','5 yrs']],rating:4.2,ok:false}],
+ bookings:[
+  {id:101,cid:1,parent:'Priya Mehta',plan:'daily',qty:2,date:'2026-11-10',age:'toddler',st:'confirmed',amt:1800,fb:5},
+  {id:102,cid:1,parent:'Arjun Kapoor',plan:'monthly',qty:1,date:'2026-11-15',age:'infant',st:'pending',amt:18000},
+  {id:103,cid:2,parent:'Priya Mehta',plan:'hourly',qty:6,date:'2026-11-08',age:'toddler',st:'confirmed',amt:900}],
+ pend:[{id:'p1',type:'Provider',name:'Little Lanterns Crèche',doc:'Fire NOC + staff police checks'},{id:'p2',type:'Provider',name:'Starlit Nursery',doc:'Child First Aid certificates'},{id:'p3',type:'Parent',name:'Sneha Rao',doc:'ID proof'}],
+ disputes:[{id:'d1',text:'Parent says pickup was delayed by 45 min at Moonlight Kids Care.',open:true}],
+ policy:'All caregivers must pass police verification. Pickup only with parent passcode. Providers must report incidents within 1 hour.'};
+let nid=200;
+const act=c=>S.bookings.filter(b=>b.cid==c.id&&b.st!='rejected'&&b.st!='cancelled').length;
+const spots=c=>Math.max(0,c.cap-act(c));
+const open=(c,h)=>c.hours=='24x7'||(c.hours=='day'?h>=7&&h<19:(h>=19||h<7));
+const HL={'24x7':'24×7','day':'Day (7am–7pm)','night':'Night (7pm–7am)'};
+function toast(t){const e=$('#toast');e.textContent=t;e.className='s';setTimeout(()=>e.className='',2400)}
+function note(t){S.notes.unshift(t)}
+function go(v,t){S.view=v;if(t)S.tab=t;render()}
+function render(){
+  const roles=['find','mine','provider','admin'],lab={find:'Find care',mine:'My bookings',provider:'Provider',admin:'Admin'};
+  const r=S.user?.role;
+  $('#nav').innerHTML=roles.filter(v=>v=='find'||(v=='mine'&&r=='parent')||(v=='provider'&&r=='provider')||(v=='admin'&&r=='admin')).map(v=>`<button class="${S.view==v?'on':''}" onclick="go('${v}')">${lab[v]}</button>`).join('');
+  $('#who').innerHTML=S.user?`<span>${S.user.name} (${r})</span><button class="btn sm" onclick="notesDlg()">🔔 ${S.notes.length}</button><button class="btn sm alt" style="color:#fff;border-color:#5a6390" onclick="S.user=null;S.view='find';render()">Log out</button>`:`<button class="btn sm" onclick="loginDlg()">Log in / Register</button>`;
+  $('#app').innerHTML=({find:vFind,mine:vMine,provider:vProv,admin:vAdmin})[S.view]();
+}
+function ringSVG(){
+  const n=new Date().getHours();let s='<svg class="ring" viewBox="0 0 220 220" role="img" aria-label="Number of centers open each hour of the day">';
+  for(let h=0;h<24;h++){const c=S.centers.filter(x=>x.ok&&open(x,h)).length,a=(h/24)*2*Math.PI-Math.PI/2,a2=((h+.9)/24)*2*Math.PI-Math.PI/2,r1=62,r2=62+c*9;
+   const p=(r,t)=>[110+r*Math.cos(t),110+r*Math.sin(t)].join(',');
+   s+=`<path d="M${p(r1,a)} L${p(r2,a)} L${p(r2,a2)} L${p(r1,a2)}Z" fill="${h==n?'#F2B33D':(h>=19||h<7)?'#7D8BC9':'#3E8E73'}"/>`}
+  return s+`<text x="110" y="106" text-anchor="middle">Open now</text><text x="110" y="126" text-anchor="middle" style="font-size:22px">${S.centers.filter(x=>x.ok&&open(x,n)).length} centers</text></svg>`}
+function vFind(){
+  const {q,hours,age,plan}=S.f,list=S.centers.filter(c=>c.ok&&(!q||(c.name+c.area).toLowerCase().includes(q.toLowerCase()))&&(!hours||c.hours==hours)&&(!age||c.ages.includes(age)));
+  return `<section class="hero"><div><h1>Care that doesn’t clock out.</h1><p>Find verified crèches and caregivers open day, night or around the clock. See real-time spots before you book.</p></div><div>${ringSVG()}<p class="mut" style="text-align:center">Centers open each hour. Yellow is the current hour.</p></div></section>
+  <div class="filters"><label>Search area or name<input value="${q}" oninput="S.f.q=this.value;rf()" placeholder="e.g. Vaishali Nagar"></label>
+  <label>Timings<select onchange="S.f.hours=this.value;rf()"><option value="">Any</option><option value="24x7" ${hours=='24x7'?'selected':''}>24×7</option><option value="night" ${hours=='night'?'selected':''}>Night</option><option value="day" ${hours=='day'?'selected':''}>Day</option></select></label>
+  <label>Age group<select onchange="S.f.age=this.value;rf()"><option value="">Any</option>${['infant','toddler','preschool'].map(a=>`<option ${age==a?'selected':''}>${a}</option>`).join('')}</select></label>
+  <label>Max price per plan<select onchange="S.f.plan=this.value;rf()"><option value="">Any</option><option value="h" ${plan=='h'?'selected':''}>Hourly under ₹130</option><option value="m" ${plan=='m'?'selected':''}>Monthly under ₹19,000</option></select></label></div>
+  <div class="grid" id="list">${cards(list.filter(c=>!plan||(plan=='h'?c.price.h<130:c.price.m<19000)))}</div>`}
+function rf(){const y=S.view;const sc=scrollY;render();scrollTo(0,sc);const i=document.querySelector('.filters input');if(i&&S.f.q){i.focus();i.setSelectionRange(99,99)}}
+function cards(l){return l.length?l.map(c=>`<article class="card cc"><div class="row"><h3>${c.name}</h3><span class="tag w">★ ${c.rating}</span></div><div class="mut">${c.area}, ${c.city}</div>
+ <div><span class="tag n">${HL[c.hours]}</span>${c.ages.map(a=>`<span class="tag">${a}</span>`).join('')}</div>
+ <div class="bar"><i style="width:${(act(c)/c.cap)*100}%"></i></div><div class="mut">${spots(c)} of ${c.cap} spots free</div>
+ <p class="mut" style="margin:8px 0">₹${c.price.h}/hr · ₹${c.price.d}/day · ₹${c.price.m}/month</p>
+ <div class="row"><button class="btn alt sm" onclick="detail(${c.id})">View details</button><button class="btn sm" onclick="book(${c.id})" ${spots(c)?'':'disabled'}>${spots(c)?'Book a slot':'Full'}</button></div></article>`).join(''):'<p class="mut">No centers match. Try removing a filter.</p>'}
+function detail(id){const c=S.centers.find(x=>x.id==id);
+ $('#dlg').innerHTML=`<h2>${c.name}</h2><p class="mut">${c.area}, ${c.city} · ${HL[c.hours]}</p>
+ <h3 style="font-size:16px">Caregivers (verified)</h3>${c.cg.map(g=>`<div class="row"><span>👤 ${g[0]}</span><span class="mut">${g[1]}</span></div>`).join('')}
+ <h3 style="font-size:16px;margin-top:14px">Safety measures</h3>${c.safety.map(s=>`<span class="tag">${s}</span>`).join('')}
+ <h3 style="font-size:16px;margin-top:14px">Certifications</h3>${c.certs.map(s=>`<span class="tag n">${s}</span>`).join('')}
+ <h3 style="font-size:16px;margin-top:14px">Facilities</h3><p class="mut">Soft-play room, separate infant nursery, sleep area, healthy meals. Photos are shared by the center after verification.</p>
+ <div class="row"><button class="btn alt" onclick="dlg.close()">Close</button><button class="btn" onclick="book(${c.id})">Book a slot</button></div>`;dlg.showModal()}
+const dlg=$('#dlg');
+function loginDlg(){dlg.innerHTML=`<h2>Log in or register</h2><div class="f"><label>Full name<input id="ln" value=""></label><label>Email<input id="le" type="email"></label><label>Password<input id="lp" type="password" placeholder="Min 6 characters"></label>
+ <label>I am a<select id="lr"><option value="parent">Parent</option><option value="provider">Childcare provider</option><option value="admin">Admin</option></select></label>
+ <div class="row"><button class="btn alt" onclick="dlg.close()">Cancel</button><button class="btn" onclick="login()">Continue</button></div><p class="mut">Demo only: any details with a 6+ character password work. No data is stored on a server.</p></div>`;dlg.showModal()}
+function login(){const n=$('#ln').value.trim(),e=$('#le').value.trim(),p=$('#lp').value;
+ if(!n||!/\S+@\S+/.test(e)||p.length<6)return toast('Enter name, a valid email and a 6+ character password');
+ const role=$('#lr').value;S.user={name:n,role};dlg.close();S.view=role=='parent'?'find':role;if(role=='provider')S.tab='bookings';if(role=='admin')S.tab='overview';note('Welcome to Little Steps, '+n+'.');render();toast('Signed in as '+role)}
+function book(id){
+ if(!S.user||S.user.role!='parent'){dlg.close();toast('Log in as a parent to book');return loginDlg()}
+ const c=S.centers.find(x=>x.id==id);
+ dlg.innerHTML=`<h2>Book ${c.name}</h2><p class="mut">${spots(c)} spots left</p><div class="f">
+ <label>Plan<select id="bp" onchange="bt(${id})"><option value="hourly">Hourly ₹${c.price.h}</option><option value="daily">Daily ₹${c.price.d}</option><option value="monthly">Monthly ₹${c.price.m}</option></select></label>
+ <label><span id="bl">Hours</span><input id="bq" type="number" min="1" value="4" oninput="bt(${id})"></label>
+ <label>Start date<input id="bd" type="date" value="2026-11-09"></label>
+ <label>Child’s age group<select id="ba">${c.ages.map(a=>`<option>${a}</option>`).join('')}</select></label>
+ <b id="bs"></b><div class="row"><button class="btn alt" onclick="dlg.close()">Cancel</button><button class="btn" onclick="send(${id})">Send booking request</button></div></div>`;
+ dlg.showModal();bt(id)}
+function bt(id){const c=S.centers.find(x=>x.id==id),p=$('#bp').value,q=+$('#bq').value||0;$('#bl').textContent={hourly:'Hours',daily:'Days',monthly:'Months'}[p];$('#bs').textContent='Total: ₹'+(q*c.price[p[0]]).toLocaleString('en-IN')}
+function send(id){const c=S.centers.find(x=>x.id==id);if(!spots(c)){dlg.close();return toast('Sorry, this center just filled up')}
+ const p=$('#bp').value,q=+$('#bq').value;if(q<1)return toast('Enter at least 1');
+ S.bookings.unshift({id:nid++,cid:id,parent:S.user.name,plan:p,qty:q,date:$('#bd').value,age:$('#ba').value,st:'pending',amt:q*c.price[p[0]]});
+ note('Request sent to '+c.name+'. You will be notified when they respond.');dlg.close();go('mine');toast('Booking request sent')}
+function notesDlg(){dlg.innerHTML=`<h2>Notifications</h2>${S.notes.map(n=>`<p>• ${n}</p>`).join('')||'<p class="mut">Nothing new.</p>'}<button class="btn" onclick="dlg.close()">Close</button>`;dlg.showModal()}
+const cn=id=>S.centers.find(c=>c.id==id).name;
+function vMine(){const my=S.bookings.filter(b=>b.parent==S.user.name),subs=my.filter(b=>b.plan=='monthly'&&b.st=='confirmed');
+ return `<h2>My bookings</h2>${subs.length?`<div class="card" style="margin-bottom:14px"><b>Active subscriptions</b>${subs.map(b=>`<div class="row"><span>${cn(b.cid)} · monthly</span><button class="btn alt sm" onclick="cancel(${b.id})">Cancel subscription</button></div>`).join('')}</div>`:''}
+ ${my.length?`<div class="card scroll"><table><tr><th>Center</th><th>Plan</th><th>Date</th><th>Amount</th><th>Status</th><th></th></tr>${my.map(b=>`<tr><td>${cn(b.cid)}</td><td>${b.qty} × ${b.plan}</td><td>${b.date}</td><td>₹${b.amt}</td><td><span class="tag ${b.st=='confirmed'?'':b.st=='pending'?'w':'r'}">${b.st}</span></td><td>${b.st=='pending'?`<button class="btn alt sm" onclick="cancel(${b.id})">Cancel</button>`:b.st=='confirmed'&&!b.fb?`<button class="btn alt sm" onclick="rate(${b.id})">Rate</button>`:b.fb?'★'+b.fb:''}</td></tr>`).join('')}</table></div>`:'<p class="mut">No bookings yet. Find a center and book your first slot.</p>'}`}
+function cancel(id){S.bookings.find(b=>b.id==id).st='cancelled';toast('Cancelled');render()}
+function rate(id){const v=prompt('Rate your experience from 1 to 5');if(v>=1&&v<=5){S.bookings.find(b=>b.id==id).fb=+v;toast('Thanks for your feedback');render()}}
+const PC=()=>S.centers[0];
+function vProv(){const c=PC(),mine=S.bookings.filter(b=>b.cid==c.id),earn=mine.filter(b=>b.st=='confirmed').reduce((a,b)=>a+b.amt,0);
+ const T=['bookings','center','analytics'].map(t=>`<button class="btn ${S.tab==t?'':'alt'} sm" onclick="S.tab='${t}';render()">${{bookings:'Booking requests',center:'Center & pricing',analytics:'Earnings'}[t]}</button>`).join('');
+ let b='';
+ if(S.tab=='bookings')b=`<div class="card scroll"><table><tr><th>Parent</th><th>Plan</th><th>Date</th><th>Amount</th><th>Status</th><th></th></tr>${mine.map(x=>`<tr><td>${x.parent}</td><td>${x.qty} × ${x.plan} (${x.age})</td><td>${x.date}</td><td>₹${x.amt}</td><td><span class="tag ${x.st=='confirmed'?'':x.st=='pending'?'w':'r'}">${x.st}</span></td><td>${x.st=='pending'?`<button class="btn ok sm" onclick="dec(${x.id},'confirmed')">Accept</button> <button class="btn bad sm" onclick="dec(${x.id},'rejected')">Reject</button>`:''}</td></tr>`).join('')}</table></div>`;
+ if(S.tab=='center')b=`<div class="grid"><div class="card f"><h3>${c.name}</h3><span class="tag ${c.ok?'':'w'}">${c.ok?'Verified':'Awaiting verification'}</span><label>Capacity (children)<input type="number" min="${act(c)}" value="${c.cap}" onchange="c0(this.value)"></label><label>Operating hours<select onchange="PC().hours=this.value;toast('Hours updated');render()">${Object.keys(HL).map(k=>`<option value="${k}" ${c.hours==k?'selected':''}>${HL[k]}</option>`).join('')}</select></label><p class="mut">${spots(c)} spots free right now.</p></div>
+ <div class="card f"><h3>Pricing plans (₹)</h3>${[['h','Hourly'],['d','Daily'],['m','Monthly']].map(p=>`<label>${p[1]}<input type="number" value="${c.price[p[0]]}" onchange="PC().price['${p[0]}']=+this.value;toast('Price saved')"></label>`).join('')}</div>
+ <div class="card f"><h3>Caregivers</h3>${c.cg.map(g=>`<div class="row"><span>${g[0]}</span><span class="mut">${g[1]}</span></div>`).join('')}<label>Add caregiver<input id="ncg" placeholder="Name, experience"></label><button class="btn sm" onclick="addcg()">Add caregiver</button></div></div>`;
+ if(S.tab=='analytics'){const pl=['hourly','daily','monthly'].map(p=>[p,mine.filter(x=>x.plan==p&&x.st=='confirmed').length]);b=`<div class="kpi"><div class="card"><b>₹${earn.toLocaleString('en-IN')}</b><span>Confirmed earnings</span></div><div class="card"><b>${mine.length}</b><span>Total requests</span></div><div class="card"><b>${Math.round(act(c)/c.cap*100)}%</b><span>Utilization</span></div></div><div class="card"><b>Confirmed bookings by plan</b>${pl.map(p=>`<div class="row"><span>${p[0]}</span><b>${p[1]}</b></div><div class="bar"><i style="width:${p[1]*40}%"></i></div>`).join('')}</div>`}
+ return `<h2>Provider dashboard</h2><div class="tabs">${T}</div>${b}`}
+function dec(id,s){const b=S.bookings.find(x=>x.id==id);if(s=='confirmed'&&!spots(PC())+1)return toast('No capacity left');b.st=s;note(`Booking from ${b.parent} ${s}.`);toast('Booking '+s);render()}
+function c0(v){PC().cap=+v;toast('Capacity updated');render()}
+function addcg(){const v=$('#ncg').value.trim();if(!v)return toast('Enter a name');const p=v.split(',');PC().cg.push([p[0],(p[1]||'New').trim()]);toast('Caregiver added (pending verification)');render()}
+function vAdmin(){const T=['overview','approvals','disputes','policy'].map(t=>`<button class="btn ${S.tab==t?'':'alt'} sm" onclick="S.tab='${t}';render()">${t[0].toUpperCase()+t.slice(1)}</button>`).join('');let b='';
+ if(S.tab=='overview'){const cf=S.bookings.filter(x=>x.st=='confirmed').length,ut=Math.round(S.centers.reduce((a,c)=>a+act(c),0)/S.centers.reduce((a,c)=>a+c.cap,0)*100);
+  b=`<div class="kpi"><div class="card"><b>1,248</b><span>Registered users</span></div><div class="card"><b>${S.centers.filter(c=>c.ok).length}</b><span>Verified providers</span></div><div class="card"><b>${Math.round(cf/S.bookings.length*100)}%</b><span>Booking conversion</span></div><div class="card"><b>${ut}%</b><span>Avg. utilization</span></div><div class="card"><b>4.6★</b><span>User satisfaction</span></div></div>
+  <div class="card"><b>Service categories & age groups</b><p><span class="tag">Infant (0–1)</span><span class="tag">Toddler (1–3)</span><span class="tag">Preschool (3–5)</span><span class="tag n">24×7</span><span class="tag n">Night</span><span class="tag n">Emergency</span></p></div>`}
+ if(S.tab=='approvals')b=S.pend.length?`<div class="grid">${S.pend.map(p=>`<div class="card"><span class="tag n">${p.type}</span><h3>${p.name}</h3><p class="mut">Documents: ${p.doc}</p><div class="row"><button class="btn ok sm" onclick="appr('${p.id}',1)">Approve</button><button class="btn bad sm" onclick="appr('${p.id}',0)">Reject</button></div></div>`).join('')}</div>`:'<p class="mut">All caught up. No pending approvals.</p>';
+ if(S.tab=='disputes')b=S.disputes.map(d=>`<div class="card row" style="margin-bottom:10px"><span>${d.text}</span>${d.open?`<button class="btn sm" onclick="S.disputes.find(x=>x.id=='${d.id}').open=false;render();toast('Dispute resolved')">Mark resolved</button>`:'<span class="tag">Resolved</span>'}</div>`).join('')+`<p class="mut">${S.bookings.length} bookings monitored.</p>`;
+ if(S.tab=='policy')b=`<div class="card f"><label>Safety policy shown to parents and providers<textarea rows="6" id="pol">${S.policy}</textarea></label><button class="btn" onclick="S.policy=$('#pol').value;toast('Policy published')">Publish policy</button></div>`;
+ return `<h2>Admin dashboard</h2><div class="tabs">${T}</div>${b}`}
+function appr(id,ok){const p=S.pend.find(x=>x.id==id);S.pend=S.pend.filter(x=>x.id!=id);if(ok&&p.type=='Provider')S.centers[4].ok=true;toast(p.name+(ok?' approved':' rejected'));render()}
+render();
+</script>
+</body>
+</html>
